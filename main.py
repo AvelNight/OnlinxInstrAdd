@@ -24,6 +24,7 @@ for i in range(len(array)):
     f.close()
 #Создаем строку для добавления в файл площадки
 instr = str(array)
+instr = instr.replace("'","").replace("[","").replace(r"\n","").replace("]","").replace(" ","")
 os.chdir("..")
 os.chdir("sheets")
 s = open("instruments.txt", "w", encoding='utf-8')
