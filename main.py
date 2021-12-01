@@ -2,9 +2,12 @@ import os
 import shutil
 
 # Создаём каталоги под файлы, перед этим удаляем существующие
-shutil.rmtree("instruments")
-shutil.rmtree("sheets")
-shutil.rmtree("charts")
+if os.path.exists("instruments"):
+    shutil.rmtree("instruments")
+if os.path.exists("sheets"):
+    shutil.rmtree("sheets")
+if os.path.exists("charts"):
+    shutil.rmtree("charts")
 os.mkdir("instruments")
 os.mkdir("sheets")
 os.mkdir("charts")
