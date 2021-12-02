@@ -3,6 +3,7 @@ import os
 import shutil
 import zipfile
 
+os.chdir(os.getcwd())
 # Создаём каталоги под файлы, перед этим удаляем существующие
 if os.path.exists("instruments"):
     shutil.rmtree("instruments")
@@ -11,8 +12,11 @@ if os.path.exists("sheets"):
 if os.path.exists("charts"):
     shutil.rmtree("charts")
 os.mkdir("instruments")
+# os.chmod("instruments", 777)
 os.mkdir("sheets")
+# os.chmod("sheets", 777)
 os.mkdir("charts")
+# os.chmod("charts", 777)
 instruments = []
 # Указываем фанансовую площадку
 platform = str(input())
@@ -22,43 +26,48 @@ with open("/Users/admin/Onlinx/file.txt", "r") as ins:
     array = []
     for line in ins:
         array.append(line)
-
+# array = ['XAG/USD_gr', 'XAU/USD_gr', 'XPD/USD_gr', 'XPT/USD_gr']
+print("Массив создан")
 # Создаем конфиги инструментов
+os.chdir(os.getcwd())
 os.chdir("instruments")
 for i in range(len(array)):
     x = str(array[i])
-    f = open(x[:-1] + ".cfg", "w", encoding='utf-8')
-    f.write("description=")
-    f.close()
+    with open(x[:-1] + ".cfg", "a+", encoding='utf-8') as f:
+        f.write("description=")
+        f.close()
+print("Инструменты созданы")
+
 # Создаем строку для добавления в файл площадки
 instr = str(array)
 instr = instr.replace("'", "").replace("[", "").replace(r"\n", "").replace("]", "").replace(" ", "")
 os.chdir("..")
 os.chdir("sheets")
-s = open("instruments.txt", "w", encoding='utf-8')
+s = open("instruments.txt", "w+", encoding='utf-8')
 s.write(instr)
 s.close()
-
+print("Строка создана")
 # Создаем конфиги с параметрами для графика
 os.chdir("..")
 os.chdir("charts")
 for i in range(len(array)):
     x = str(array[i])
-    d = open(platform + "." + x[:-1] + ".cfg", "w", encoding='utf-8')
+    d = open(platform + "." + x[:-1] + ".cfg", "w+", encoding='utf-8')
     # Ниже прописываем маску для графиков
     d.write("fields=Last VDay,R VDay,Bid,Ask\n")
-    d.write("periods=1,5,10,15,30,60,1440,W,M,Y\n")
+    d.write("periods=1,15,30,60,W,M,Y\n")
     d.write("mask=0000.00\n")
     d.write("filter=0.01\n")
     d.write("vmask=0000000000")
     d.close()
+print("Параменты графика созданы")
 # Архивируем все каталоги
 dt = datetime.datetime.now()
 now_date = dt.date().strftime("%Y-%m-%d")  # Текущая дата
 now_time = dt.time().strftime("%H-%M-%S")  # Текущее время
 os.chdir("..")
 backup_folders = ["charts", "instruments", "sheets"]  # Список папок для архивации
-arch_name = "backup_" + str(now_date) + ".zip"  # имя архива!
+arch_name = "arch_" + str(now_date) + ".zip"  # имя архива!
 ignore_file = ["123.txt"]  # если надо исключить файлы
 
 
