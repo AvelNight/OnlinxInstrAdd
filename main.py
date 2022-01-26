@@ -19,6 +19,7 @@ os.mkdir("charts")
 # os.chmod("charts", 777)
 instruments = []
 # Указываем фанансовую площадку
+print("Enter Finance platform")
 platform = str(input())
 
 # Создаем массив с кодами инструмента
